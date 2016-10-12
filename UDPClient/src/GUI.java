@@ -7,15 +7,21 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 
 public class GUI extends JFrame {
+	
 
 	private JPanel contentPane;
 	private JTextField messageBox;
 	private String message = "";
+	private JTextField fileNameField;
+	protected File selectedFile;
 
 	/**
 	 * Launch the application.
@@ -38,33 +44,65 @@ public class GUI extends JFrame {
 	 */
 	public GUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 475);
+		setBounds(100, 100, 604, 606);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JTextArea feedBackArea = new JTextArea();
-		feedBackArea.setBounds(10, 123, 414, 302);
+		feedBackArea.setBounds(10, 228, 568, 328);
 		contentPane.add(feedBackArea);
 		
 		messageBox = new JTextField();
-		messageBox.setBounds(10, 41, 234, 20);
+		messageBox.setBounds(20, 33, 211, 20);
 		contentPane.add(messageBox);
 		messageBox.setColumns(10);
 		
-		JButton btnSend = new JButton("Send");
-		btnSend.addActionListener(new ActionListener() {
+		JButton btnSendMessage = new JButton("Send");
+		btnSendMessage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				message = messageBox.getText();
 			}
 		});
-		btnSend.setBounds(254, 40, 89, 23);
-		contentPane.add(btnSend);
+		btnSendMessage.setBounds(19, 78, 89, 44);
+		contentPane.add(btnSendMessage);
 		
-		JLabel lblMessage = new JLabel("Message");
-		lblMessage.setBounds(10, 26, 98, 14);
+		JLabel lblMessage = new JLabel("Message:");
+		lblMessage.setBounds(10, 8, 98, 14);
 		contentPane.add(lblMessage);
+		
+		JLabel lblSelectFile = new JLabel("File:");
+		lblSelectFile.setBounds(254, 8, 81, 14);
+		contentPane.add(lblSelectFile);
+		
+		JButton btnChooseFile = new JButton("Select");
+		btnChooseFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//File chooser, starts in working folder
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new java.io.File("."));
+				int returnValue = fileChooser.showOpenDialog(null);
+				if (returnValue == JFileChooser.APPROVE_OPTION) {
+					//when you selected a file, store it
+					selectedFile = fileChooser.getSelectedFile();
+					}
+				//set the GUI nameField to show which file was selected
+				fileNameField.setText(selectedFile.getName());
+			}
+		});
+		btnChooseFile.setBounds(254, 23, 98, 45);
+		contentPane.add(btnChooseFile);
+		
+		fileNameField = new JTextField();
+		fileNameField.setEditable(false);
+		fileNameField.setBounds(362, 35, 135, 20);
+		contentPane.add(fileNameField);
+		fileNameField.setColumns(10);
+		
+		JButton btnSendFile = new JButton("Send File");
+		btnSendFile.setBounds(254, 79, 98, 43);
+		contentPane.add(btnSendFile);
 	}
 
 	public String getMessage() {
@@ -74,6 +112,4 @@ public class GUI extends JFrame {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-
-	
 }
