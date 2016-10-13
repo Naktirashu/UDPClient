@@ -2,7 +2,7 @@ import java.awt.EventQueue;
 
 public class RunUDP {
 
-	private int start_port = 7; 
+	//private int start_port = 7; 
 	
 	public RunUDP(){
 		
@@ -12,7 +12,7 @@ public class RunUDP {
 		
 		udpClient.addObserver(gui);
 		
-		udpClient.setPort(start_port);
+		//udpClient.setPort(start_port);
 		//gui.setMessage("");
 		
 		myController.addModel(udpClient);
