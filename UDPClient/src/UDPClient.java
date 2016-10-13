@@ -7,14 +7,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import java.net.*;
+import java.util.Observable;
 
-public class UDPClient {
+public class UDPClient extends Observable implements Runnable{
+	private String messageReceived = "";
+	private String messageSend = "";
+	ReceiverThread receiverThread;
 	
-	public GUI gui;
-	
-	public final static int PORT = 7;
 
-	public static void main(String[] args) {
+	public static int DEFAULT_PORT = 7;
+	
+
+	public void run(){
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -24,11 +29,12 @@ public class UDPClient {
 					e.printStackTrace();
 				}
 			}
-		});
+		});*/
+		
 
 		String hostname = "localhost";
 
-		if (args.length > 0) hostname = args[0];
+		//if (args.length > 0) hostname = args[0];
 
 		try {
 
@@ -36,11 +42,11 @@ public class UDPClient {
 
 			DatagramSocket socket = new DatagramSocket();
 
-			SenderThread sender = new SenderThread(socket, ia, PORT);
+			SenderThread sender = new SenderThread(socket, ia, DEFAULT_PORT, this);
 
 			sender.start();
 
-			Thread receiver = new ReceiverThread(socket);
+			Thread receiver = new ReceiverThread(socket, this);
 
 			receiver.start();
 
@@ -50,6 +56,31 @@ public class UDPClient {
 
 		}
 
+	}
+
+	public String getMessageReceived() {
+		return messageReceived;
+	}
+
+	public void setMessageReceived(String messageReceived) {
+		this.messageReceived = messageReceived;
+		setChanged();
+		notifyObservers(messageReceived);
+	}
+
+	public String getMessageSend() {
+		return messageSend;
+	}
+	
+	public void setMessageSend(String messageSend) {
+		this.messageSend = messageSend;
+	}
+	
+	public void setPort(int start_port) {
+		DEFAULT_PORT = start_port;
+		setChanged();
+		notifyObservers(DEFAULT_PORT);
+		
 	}
 
 }

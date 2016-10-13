@@ -3,25 +3,41 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Observable;
+import java.util.Observer;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
+import javax.swing.JScrollBar;
+import java.awt.ScrollPane;
 
-public class GUI extends JFrame {
+public class GUI extends JFrame implements Observer {
 	
 
 	private JPanel contentPane;
+	
+	protected File selectedFile;
+	private JTextField fileNameField;
+	private JButton btnSendFile;
+	
 	private JTextField messageBox;
 	private String message = "";
-	private JTextField fileNameField;
-	protected File selectedFile;
+	private JButton btnSendMessage;
+	
+	
+	private JTextArea feedBackArea;
+
+	private ScrollPane scrollPane;
+
 
 	/**
 	 * Launch the application.
@@ -44,27 +60,26 @@ public class GUI extends JFrame {
 	 */
 	public GUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 604, 606);
+		setBounds(100, 100, 603, 606);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JTextArea feedBackArea = new JTextArea();
-		feedBackArea.setBounds(10, 228, 568, 328);
-		contentPane.add(feedBackArea);
+		feedBackArea = new JTextArea();
+		feedBackArea.setBounds(10, 229, 568, 328);
 		
 		messageBox = new JTextField();
 		messageBox.setBounds(20, 33, 211, 20);
 		contentPane.add(messageBox);
 		messageBox.setColumns(10);
 		
-		JButton btnSendMessage = new JButton("Send");
-		btnSendMessage.addActionListener(new ActionListener() {
+		btnSendMessage = new JButton("Send");
+		/*btnSendMessage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				message = messageBox.getText();
 			}
-		});
+		});*/
 		btnSendMessage.setBounds(19, 78, 89, 44);
 		contentPane.add(btnSendMessage);
 		
@@ -103,13 +118,34 @@ public class GUI extends JFrame {
 		JButton btnSendFile = new JButton("Send File");
 		btnSendFile.setBounds(254, 79, 98, 43);
 		contentPane.add(btnSendFile);
+		
+		scrollPane = new ScrollPane();
+		scrollPane.add(feedBackArea);
+		scrollPane.setBounds(20, 186, 540, 372);
+		contentPane.add(scrollPane);
+		
+		//contentPane.setVisible(true);
 	}
 
 	public String getMessage() {
 		return message;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setMessage() {
+		message = messageBox.getText();
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		//print the received message to the textArea
+		feedBackArea.append("Response from Server: " + arg1.toString() +"\n");
+		//Scrolls with the incoming new data
+		scrollPane.setScrollPosition(0,feedBackArea.getDocument().getLength());
+		
+	}
+	
+	public void addController(ActionListener controller){
+		btnSendMessage.addActionListener(controller);
+
 	}
 }

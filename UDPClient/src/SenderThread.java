@@ -7,16 +7,24 @@ import java.net.InetAddress;
 
 public class SenderThread extends Thread {
 
+	UDPClient udpClient;
+	
 	private InetAddress server;
 	private DatagramSocket socket;
 	private int port;
 	private volatile boolean stopped = false;
 	
-	public SenderThread(DatagramSocket socket, InetAddress address, int port) {
+	//test for sending strings
+	
+	
+	public SenderThread(DatagramSocket socket, InetAddress address, int port, UDPClient udpClient) {
 		this.server = address;
 		this.port = port;
 		this.socket = socket;
 		this.socket.connect(server, port);
+		
+		//unfinished 
+		this.udpClient = udpClient;
 	}
 
 	public void halt(){
@@ -28,6 +36,7 @@ public class SenderThread extends Thread {
 	public void run() {
 		try{
 			BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
+			
 			while(true){
 				if(stopped) return;
 				String theLine = userInput.readLine();
