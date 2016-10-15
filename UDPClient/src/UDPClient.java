@@ -10,8 +10,13 @@ import java.net.*;
 import java.util.Observable;
 
 public class UDPClient extends Observable implements Runnable{
+	
+	private MessageHandler messageHandler;
 	private String messageReceived = "";
 	private String messageSend = "";
+	private String sendingMessage = "";
+	
+
 	ReceiverThread receiverThread;
 	
 
@@ -30,7 +35,7 @@ public class UDPClient extends Observable implements Runnable{
 				}
 			}
 		});*/
-		
+		messageHandler = new MessageHandler(this);
 
 		String hostname = "localhost";
 
@@ -42,6 +47,8 @@ public class UDPClient extends Observable implements Runnable{
 
 			DatagramSocket socket = new DatagramSocket();
 
+			//FIXME need to research/ implement a blocking queue
+			
 			SenderThread sender = new SenderThread(socket, ia, DEFAULT_PORT, this);
 
 			sender.start();
@@ -49,6 +56,26 @@ public class UDPClient extends Observable implements Runnable{
 			Thread receiver = new ReceiverThread(socket, this);
 
 			receiver.start();
+			
+			Thread t1 = new Thread(new Runnable(){
+				public void run(){
+					try{
+						messageHandler.producer();
+					}catch (InterruptedException e){
+						e.printStackTrace();
+					}
+				}
+			});
+			
+			Thread t2 = new Thread(new Runnable(){
+				public void run(){
+					messageHandler.consumer();
+				}
+			});
+			
+			t1.start();
+			t2.start();
+			
 
 		} catch (UnknownHostException ex) { System.err.println(ex);
 
@@ -57,7 +84,17 @@ public class UDPClient extends Observable implements Runnable{
 		}
 
 	}
+	
+	public String getSendingMessage() {
+		return sendingMessage;
+	}
 
+	public void setSendingMessage(String sendingMessage) {
+		this.sendingMessage = sendingMessage;
+		setChanged();
+		notifyObservers(sendingMessage);
+	}
+	
 	public String getMessageReceived() {
 		return messageReceived;
 	}

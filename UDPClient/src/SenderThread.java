@@ -36,7 +36,7 @@ public class SenderThread extends Thread {
 	public void run() {
 		try{
 			BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
-			
+			//research and implement linked blocking queue
 			while(true){
 				if(stopped) return;
 				String theLine = userInput.readLine();
