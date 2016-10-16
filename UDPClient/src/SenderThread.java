@@ -6,7 +6,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 public class SenderThread extends Thread {
-
+	//test comment
 	UDPClient udpClient;
 	
 	private InetAddress server;
