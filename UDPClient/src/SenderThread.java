@@ -6,7 +6,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 public class SenderThread extends Thread {
-	//test comment
+	
 	UDPClient udpClient;
 	
 	private InetAddress server;
@@ -60,6 +60,7 @@ public class SenderThread extends Thread {
 				DatagramPacket output = new DatagramPacket(data, data.length, server, port);
 				socket.send(output);
 				Thread.yield();
+				
 			}
 		}
 		catch(IOException ex){System.err.println(ex);}
