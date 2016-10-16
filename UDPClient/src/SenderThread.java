@@ -35,11 +35,26 @@ public class SenderThread extends Thread {
 	@Override
 	public void run() {
 		try{
-			BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
+			//BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
 			//research and implement linked blocking queue
+			/*String value = null;
+			try {
+				value = udpClient.getQueue().take();
+				
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+			
 			while(true){
 				if(stopped) return;
-				String theLine = userInput.readLine();
+				String theLine = null;
+				try {
+					theLine = udpClient.getQueue().take();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				if(theLine.equals("."))break;
 				byte[] data = theLine.getBytes("UTF-8");
 				DatagramPacket output = new DatagramPacket(data, data.length, server, port);

@@ -8,14 +8,18 @@ import java.io.InputStreamReader;
 
 import java.net.*;
 import java.util.Observable;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 public class UDPClient extends Observable implements Runnable{
 	
 	private MessageHandler messageHandler;
 	private String messageReceived = "";
+	
+
 	private String messageSend = "";
 	private String sendingMessage = "";
-	
+	private BlockingQueue<String> queue = new ArrayBlockingQueue<String>(10);
 
 	ReceiverThread receiverThread;
 	
@@ -57,7 +61,7 @@ public class UDPClient extends Observable implements Runnable{
 
 			receiver.start();
 			
-			Thread t1 = new Thread(new Runnable(){
+			/*Thread t1 = new Thread(new Runnable(){
 				public void run(){
 					try{
 						messageHandler.producer();
@@ -74,7 +78,7 @@ public class UDPClient extends Observable implements Runnable{
 			});
 			
 			t1.start();
-			t2.start();
+			t2.start();*/
 			
 
 		} catch (UnknownHostException ex) { System.err.println(ex);
@@ -118,6 +122,14 @@ public class UDPClient extends Observable implements Runnable{
 		setChanged();
 		notifyObservers(DEFAULT_PORT);
 		
+	}
+	
+	public BlockingQueue<String> getQueue() {
+		return queue;
+	}
+
+	public void setQueue(BlockingQueue<String> queue) {
+		this.queue = queue;
 	}
 
 }
