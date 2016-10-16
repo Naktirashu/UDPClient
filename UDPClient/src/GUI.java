@@ -21,7 +21,7 @@ import javax.swing.JScrollBar;
 import java.awt.ScrollPane;
 
 public class GUI extends JFrame implements Observer {
-	
+	//test comment
 
 	private JPanel contentPane;
 	
