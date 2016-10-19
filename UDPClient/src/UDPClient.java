@@ -19,7 +19,7 @@ public class UDPClient extends Observable implements Runnable{
 
 	private String messageSend = "";
 	private String sendingMessage = "";
-	private BlockingQueue<String> queue = new ArrayBlockingQueue<String>(10);
+	private BlockingQueue<String> queue = new ArrayBlockingQueue<String>(50);
 
 	ReceiverThread receiverThread;
 	
