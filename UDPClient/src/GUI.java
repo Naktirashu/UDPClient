@@ -135,6 +135,7 @@ public class GUI extends JFrame implements Observer {
 		message = messageBox.getText();
 	}
 
+	//FIXME add a "Sending: " message to the textArea for the string, we can just do a getText and print it, but for file it would be packet number
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		//print the received message to the textArea
