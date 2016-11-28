@@ -25,9 +25,9 @@ public class Controller implements ActionListener {
 		//doesn't work yet
 		switch(e.getActionCommand()){
 		case "Send":
-			gui.setMessage();
-			String tmp = gui.getMessage();
-			//udpClient.setMessageSend(tmp);
+			gui.setMessageReceived();
+			String tmp = gui.getMessageReceived();
+			
 			try {
 				udpClient.getQueue().put(tmp);
 			} catch (InterruptedException e1) {

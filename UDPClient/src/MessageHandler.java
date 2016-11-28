@@ -43,7 +43,7 @@ public class MessageHandler {
 				e.printStackTrace();
 			}
 			
-			udpClient.setSendingMessage(value);
+			//udpClient.setSendingMessage(value);
 			
 		}
 		
