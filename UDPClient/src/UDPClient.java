@@ -13,12 +13,14 @@ import java.util.concurrent.BlockingQueue;
 
 public class UDPClient extends Observable implements Runnable{
 	
-	private MessageHandler messageHandler;
-	private String messageReceived = "";
+	//private MessageHandler messageHandler;
 	
-
+	//used for the message we got back from server
+	private String messageReceived = "";
+	//used for displaying the message we are sending to server
 	private String messageSend = "";
-	private String sendingMessage = "";
+	
+	
 	private BlockingQueue<String> queue = new ArrayBlockingQueue<String>(50);
 
 	ReceiverThread receiverThread;
@@ -39,7 +41,7 @@ public class UDPClient extends Observable implements Runnable{
 				}
 			}
 		});*/
-		messageHandler = new MessageHandler(this);
+		//messageHandler = new MessageHandler(this);
 
 		String hostname = "localhost";
 
@@ -89,15 +91,6 @@ public class UDPClient extends Observable implements Runnable{
 
 	}
 	
-	public String getSendingMessage() {
-		return sendingMessage;
-	}
-
-	public void setSendingMessage(String sendingMessage) {
-		this.sendingMessage = sendingMessage;
-		setChanged();
-		notifyObservers(sendingMessage);
-	}
 	
 	public String getMessageReceived() {
 		return messageReceived;
@@ -115,6 +108,8 @@ public class UDPClient extends Observable implements Runnable{
 	
 	public void setMessageSend(String messageSend) {
 		this.messageSend = messageSend;
+		setChanged();
+		notifyObservers(messageSend);
 	}
 	
 	public void setPort(int start_port) {

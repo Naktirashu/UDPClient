@@ -21,7 +21,8 @@ import javax.swing.JScrollBar;
 import java.awt.ScrollPane;
 
 public class GUI extends JFrame implements Observer {
-	//test commentssssssssss
+
+	//test comment
 
 	private JPanel contentPane;
 	
@@ -30,7 +31,8 @@ public class GUI extends JFrame implements Observer {
 	private JButton btnSendFile;
 	
 	private JTextField messageBox;
-	private String message = "";
+	private String messageReceived = "";
+	private String messageSend = "";
 	private JButton btnSendMessage;
 	
 	
@@ -127,17 +129,19 @@ public class GUI extends JFrame implements Observer {
 		//contentPane.setVisible(true);
 	}
 
-	public String getMessage() {
-		return message;
+	public String getMessageReceived() {
+		return messageReceived;
 	}
 
-	public void setMessage() {
-		message = messageBox.getText();
+	public void setMessageReceived() {
+		messageReceived = messageBox.getText();
 	}
 
 	//FIXME add a "Sending: " message to the textArea for the string, we can just do a getText and print it, but for file it would be packet number
 	@Override
 	public void update(Observable arg0, Object arg1) {
+		
+		
 		//print the received message to the textArea
 		feedBackArea.append("Response from Server: " + arg1.toString() +"\n");
 		//Scrolls with the incoming new data
